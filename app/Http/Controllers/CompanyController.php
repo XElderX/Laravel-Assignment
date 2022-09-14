@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCompany;
+use App\Http\Requests\UpdateCompany;
+use App\Http\Resources\CompaniesCollection;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Http\Resources\CompanyResource;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        return CompanyResource::collection(Company::all());
     }
 
     /**
@@ -33,9 +42,11 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCompany $request)
     {
-        //
+        
+        return Company::create($request->validated());
+
     }
 
     /**
@@ -44,9 +55,9 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show(Company $company_id)
     {
-        //
+        return new CompanyResource($company_id);
     }
 
     /**
@@ -67,9 +78,14 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(UpdateCompany $request, Company $company)
     {
-        //
+   
+        $data = $request->validated();
+        
+        $company->fill($data);
+        $company->save();
+
     }
 
     /**

@@ -18,7 +18,7 @@ class Admin_Seeder extends Seeder
         {
             $admin = new \App\Models\User();
             $admin->name = "Admin";
-            $admin->email = "admin@support.com";
+            $admin->email = "admin@admin.com";
             $admin->password = Hash::make('password');
             $admin->admin = 1;
             $admin->save();

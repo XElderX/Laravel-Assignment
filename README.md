@@ -19,10 +19,22 @@ TBA
 * Implemented JWT Auth
 * Created migrations for new tables (Companies, Employees)
 * Created Models
-* Created Controllers(have not had filled methods yet)
-* Filled up models with fillable set up relationships 
+* Created Controllers
+* Filled up models with fillables, set up relationships 
 * Added factories to fill up databases table's with details(for testing)
 * Created and setted seeders (To migrate with seeding and generated factory data run command: php artisan migrate --seed)
+
+##### 2022.09.13
+
+* Fixed /config/auth.php auth guard correctly 
+* Filled up controllers with index and show method
+* Created resource controllers
+* Changed admin_seeder email from admin@support.com to admin@admin.com as required for task 
+* implemented store method for both controllers (works as submiting data as form request )
+* implemented update method for both controllers (works as submiting data as form request(x-www-form-urlencoded))
+* Created request validation classes for store and update allowed_methods
+
+
 
 
 

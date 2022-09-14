@@ -26,6 +26,7 @@ class EmployeeFactory extends Factory
             'last_name' =>$this->faker->lastName,
             'company' =>Company::all()->random()->id,
             'email' =>$this->faker->email,
+            'phone' =>$this->faker->phoneNumber,
             'age' =>$this->faker->numberBetween(18, 55),
             'salary' =>$this->faker->numberBetween(10000, 50000),
  

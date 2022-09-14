@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEmployee;
+use App\Http\Requests\UpdateEmployee;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\EmployeesCollection;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        return EmployeeResource::collection(Employee::all());
     }
 
     /**
@@ -33,9 +43,9 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployee $request)
     {
-        //
+        return Employee::create($request->validated());
     }
 
     /**
@@ -44,9 +54,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show(Employee $employee_id)
     {
-        //
+        return new EmployeeResource($employee_id);
     }
 
     /**
@@ -67,9 +77,12 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployee $request, Employee $employee)
     {
-        //
+        $data = $request->validated();
+        $employee->fill($data);
+        $employee->save();
+
     }
 
     /**
