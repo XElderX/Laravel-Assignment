@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Company;
 use Illuminate\Http\Resources\Json\JsonResource;
+
 
 class EmployeeResource extends JsonResource
 {
@@ -21,7 +23,9 @@ class EmployeeResource extends JsonResource
         'attributes' => [
             'first_name' => $this ->first_name,
             'last_name' => $this ->last_name,
-            'company' => $this ->company,
+            'company' => Company::where('id', $this->company)
+            ->get()
+            ->makeHidden(['created_at','updated_at' ]),
             'email' => $this ->email,
             'phone' => $this ->phone,
             'age' => $this ->age,
@@ -29,3 +33,4 @@ class EmployeeResource extends JsonResource
         ]];
 }
 }
+

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 use Illuminate\Validation\Rule;
 
 class UpdateEmployee extends FormRequest
@@ -30,40 +33,47 @@ class UpdateEmployee extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                
+
             ],
             'last_name' => [
                 'required',
                 'string',
                 'max:50',
-      
+
             ],
             'company' => [
                 'required',
-                
-                
+
+
             ],
             'email' => [
                 'nullable',
                 'email',
                 Rule::unique('employees')->ignore($this->employee),
-      
+
             ],
             'phone' => [
                 'nullable',
                 Rule::unique('employees')->ignore($this->employee),
-                
-                
+
+
             ],
             'age' => [
                 'nullable'
-      
+
             ],
             'salary' => [
                 'nullable',
-                
-      
+
+
             ],
-    ];
+        ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+            'status' => true
+        ], 422));
     }
 }

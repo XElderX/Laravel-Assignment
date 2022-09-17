@@ -28,16 +28,19 @@ Route::group(['prefix' => 'v1'],function (){
 
 Route::controller(CompanyController::class)->group(function () {
     Route::get('companies', 'index');
-    Route::get('companies/{company_id}', 'show');
+    Route::get('companies/{company}', 'show');
     Route::post('companies', 'store');
     Route::put('companies/{company}', 'update');
+    Route::delete('companies/{company}','destroy');
 
 }); 
 Route::controller(EmployeeController::class)->group(function () {
     Route::get('employees', 'index');
-    Route::get('employees/{employee_id}', 'show');
+    Route::get('employees/{employee}', 'show');
     Route::post('employees', 'store');
     Route::put('employees/{employee}', 'update');
+    Route::delete('employees/{employee}', 'destroy');
+    Route::get('employees/filter/{company_name}', 'getByCompany');
 
     
 

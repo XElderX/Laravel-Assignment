@@ -44,8 +44,10 @@ class CompanyController extends Controller
      */
     public function store(StoreCompany $request)
     {
+        Company::create($request->validated());
+        return response()->json(['success' => 'success'], 201);
+   
         
-        return Company::create($request->validated());
 
     }
 
@@ -55,9 +57,9 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company_id)
+    public function show(Company $company)
     {
-        return new CompanyResource($company_id);
+        return new CompanyResource($company);
     }
 
     /**
@@ -80,11 +82,13 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompany $request, Company $company)
     {
-   
         $data = $request->validated();
-        
         $company->fill($data);
-        $company->save();
+       if($company->save()){
+        return($company->save() == 1) ?
+        response()->json(['success' => 'success'], 200) : 
+        response()->json(['error' => 'Updating can\'t be done successfully'], 500);
+        }
 
     }
 
@@ -94,8 +98,18 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($company)
     {
-        //
+
+        return (Company::destroy($company) == 1) ?
+        response()->json(['success' => 'success'], 200) : 
+        response()->json(['error' => 'deleting from database was not successful'], 500);
+
+        // $company = Company::findOrFail($company);
+        // if($company->delete()) {
+        //     return new CompanyResource($company);
+        // }
+     
+       
     }
 }

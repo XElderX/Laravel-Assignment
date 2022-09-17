@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployee;
 use App\Http\Requests\UpdateEmployee;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\EmployeesCollection;
+use App\Models\Company;
 use App\Models\Employee;
+use App\Notifications\NewEmployeeNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -15,7 +17,7 @@ class EmployeeController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -45,7 +47,13 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployee $request)
     {
-        return Employee::create($request->validated());
+        $employee = Employee::create($request->validated());
+        $company = Company::find($employee->company);
+        $company->notify(new NewEmployeeNotification());
+        return response()->json([
+            'status' => 'OK', 'A new employee:' =>  $employee,
+            'email was send to company: ' => $company
+        ]);
     }
 
     /**
@@ -54,9 +62,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee_id)
+    public function show(Employee $employee)
     {
-        return new EmployeeResource($employee_id);
+        return new EmployeeResource($employee);
     }
 
     /**
@@ -81,8 +89,9 @@ class EmployeeController extends Controller
     {
         $data = $request->validated();
         $employee->fill($data);
-        $employee->save();
-
+        return ($employee->save() == 1) ?
+            response()->json(['success' => 'success'], 200) :
+            response()->json(['error' => 'Updating can\'t be done successfully'], 500);
     }
 
     /**
@@ -91,8 +100,31 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy($employee)
     {
-        //
+
+        return (Employee::destroy($employee) == 1) ?
+            response()->json(['success' => 'success'], 200) :
+            response()->json(['error' => 'deleting from database was not successful'], 500);
+
+        // $employee = Employee::findOrFail($employee);
+        // if($employee->delete()) {
+        //     return new EmployeeResource($employee);
+        // }
+
+    }
+    public function getByCompany($company_name)
+    {
+
+        // $fillteredData = DB::table('employees')
+        // ->join('companies','employees.company','=','companies.id')
+        // ->where('companies.name', 'like', '%'. $company_name .'%')
+        // ->get();
+        $collection = EmployeeResource::collection(Employee::all());
+        $company = Company::where('name', 'like', '%' . $company_name . '%')
+            ->value('id');
+        $filtered = $collection->where('company', $company)->values()->all();
+
+        return $filtered;
     }
 }
