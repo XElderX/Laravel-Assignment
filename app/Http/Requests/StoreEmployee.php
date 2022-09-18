@@ -33,7 +33,7 @@ class StoreEmployee extends FormRequest
             'email' => 'nullable|email|unique:employees',
             'phone' => 'nullable|unique:employees',
             'age' =>'nullable',
-            'salary' => 'nullable',
+            'salary' => 'nullable|integer',
          
         ];
     }

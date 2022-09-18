@@ -24,6 +24,7 @@ Route::controller(AuthController::class)->group(function () {
 
 });
 
+Route::middleware('auth')->group(function () {
 Route::group(['prefix' => 'v1'],function (){
 
 Route::controller(CompanyController::class)->group(function () {
@@ -41,11 +42,8 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::put('employees/{employee}', 'update');
     Route::delete('employees/{employee}', 'destroy');
     Route::get('employees/filter/{company_name}', 'getByCompany');
-
-    
-
 });
-
+});
 });
 // Route::middleware('auth:api')->prefix('v1')->group(function() {
 //     // Route::get('/user', function(Request $request){

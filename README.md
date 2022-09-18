@@ -4,11 +4,55 @@
 Junior Laravel Developer Test
 
 ### Assignment requirements
-TBA
+
+Junior Laravel Developer Test
+* JWT Auth: ability to log in as administrator (can use Laravel
+Passport)
+* Use database seeds to create first user with email
+admin@admin.com and password “password”
+* CRUD functionality (Create / Read / Update / Delete) for
+items: Companies and Employees.
+* Companies DB table consists of these fields: Name
+(required), email, website
+* Employees DB table consists of these fields: First name
+(required), last name (required), Company (foreign key to
+Companies), email, phone, age, salary.
+* Use database migrations to create those schemas above
+* Use Laravel api resource for data response formatting.
+* Use Laravel’s validation function, using Request classes
+* Use middleware for protection of Companies and
+Employees crud.
+* System should send email notification to the company after
+a new employee was added.
+* Add data filtering to Employees CRUD to filter employees
+by Company on api request.
 
 ### Project setup
-TBA
+You need to have following apps installed:
 
+* XAMPP, MySQL Workbench;
+
+
+### Install
+To run this project enter these commands into opened project terminal:
+* Clone repository to your local device: <code> git clone https://github.com/XElderX/Laravel-Assignment.git </code>(git bash)
+* Install depndences: <clone>composer update </clone>(powershell or cmd prompt)
+* Create a new database: <i>e.g</i> <code>laravel_task</code>(mySQL workbench)
+* Open <code>.env.example</code> file. Find the line: <code>DB_DATABASE=laravel</code> change to <code>i.g</code>DB_DATABASE=laravel_task</code>
+* Use command line (powershell only) <code>cp .env.example .env</code>
+* Fill up <b>.env</b> file with required data like mail_host or DB_host etc.
+* Generate app key with command (powershell or cmd prompt)<code>php artisan key:generate</code>
+* Generate JWT secret key with command(powershell or cmd prompt) <code>php artisan jwt:secret</code>
+* Run migrations and seeds <code>php artisan:migrate</code><code> php artisan db:seed</code> or both and with dummy factory data with single command line (powershell or cmd prompt)  <code>php artisan migrate --seed</code>
+* Run the server with command line (powershell or cmd prompt) <code>php artisan:serve</code>
+
+### How to check if API working
+* Check available route methods with command <code>php artisan route:list</code>
+* Use postman. Sent login request with POST method to <b> http://127.0.0.1:8000/api/login </b> providing login data email: <b>admin@admin.com</b> and password:<b>password</b>;
+* As response you have to get authorisation token, cope it with ctrl + c;
+* Sending HTTP methods as authorisation select Bearer token and paste it;
+* Use <b>x-www-form-urlencoded</b> for form data requests;
+* As for entering employee' salary use <b>integer data type</b> entering value in lowest curency form(e.g) for salary like 1500.99 enter 150099 in API it automatically divides by 100 giving correct value.
 
 
 ### Project Changelog
@@ -44,9 +88,10 @@ TBA
 * Modified controllers for returning api responses;
 * Updated Store and Update Request Controllers for both models, adding failed Validation method to get validation error response;
 * Changes in Exeptions/handler.php making to throw 404 not found response messages;
-* Added filter method called getByCompany(), to get collection data of Employees filtered by company name;
+* Added filter method called getByCompany, to get collection data of Employees filtered by company name;
+##### 2022.09.18
 
-
+* Updated Readme md with assignment requiments, and instaliation guide
 
 
 

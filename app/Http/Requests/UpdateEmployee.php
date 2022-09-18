@@ -63,7 +63,7 @@ class UpdateEmployee extends FormRequest
 
             ],
             'salary' => [
-                'nullable',
+                'nullable|integer',
 
 
             ],
